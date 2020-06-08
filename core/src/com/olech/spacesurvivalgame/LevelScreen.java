@@ -84,12 +84,6 @@ public class LevelScreen extends BaseScreen
         if ( keycode == Input.Keys.SPACE )
             spaceship.shoot();
         if( keycode == Input.Keys.ENTER) {
-            //need to remove everything from previous game
-//            for ( BasicActor rockActor : BasicActor.getList(mainStage, "com.olech.spacesurvivalgame.gameactors.Asteroid") ) {
-////                rockActor.remove();
-////            }
-////            uiStage.getActors().clear();
-////            initialize();
             StartScreen startScreen = new StartScreen();
             SpaceGame.setActiveScreen(startScreen);
         }

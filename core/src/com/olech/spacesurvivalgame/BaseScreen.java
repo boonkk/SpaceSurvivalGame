@@ -17,8 +17,7 @@ public abstract class BaseScreen implements Screen, InputProcessor
     }
     public abstract void initialize();
     public abstract void update(float dt);
-    public void render(float dt)
-    {
+    public void render(float dt) {
         uiStage.act(dt);
         mainStage.act(dt);
         update(dt);
@@ -27,7 +26,7 @@ public abstract class BaseScreen implements Screen, InputProcessor
         mainStage.draw();
         uiStage.draw();
     }
-    // methods required by Screen interface
+
     public void resize(int width, int height) { }
     public void pause() { }
     public void resume() { }

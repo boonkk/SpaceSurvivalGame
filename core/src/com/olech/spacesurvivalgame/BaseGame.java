@@ -13,11 +13,8 @@ public abstract class BaseGame extends Game {
 
     @Override
     public void create() {
-
-
         InputMultiplexer im = new InputMultiplexer();
         Gdx.input.setInputProcessor( im );
-
     }
 
     public static void setActiveScreen(BaseScreen s) {

@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class BasicActor extends Group {
     private Animation<TextureRegion> animation;
@@ -84,11 +85,10 @@ public class BasicActor extends Group {
         TextureRegion[][] temp = TextureRegion.split(texture, frameWidth, frameHeight);
         Array<TextureRegion> textureArray = new Array<>();
 
-        for (int r = 0; r < rows; r++)
-            for (int c = 0; c < cols; c++)
-                textureArray.add( temp[r][c] );
-                Animation<TextureRegion> anim = new Animation<>(frameDuration,
-                textureArray);
+        for (int row = 0; row < rows; row++)
+            for (int col = 0; col < cols; col++)
+                textureArray.add( temp[row][col] );
+                Animation<TextureRegion> anim = new Animation<>(frameDuration, textureArray);
 
         if (loop)
             anim.setPlayMode(Animation.PlayMode.LOOP);
@@ -102,19 +102,21 @@ public class BasicActor extends Group {
 
 
     public Animation<TextureRegion> loadAnimationFromFiles(String[] fileNames, float frameDuration, boolean loop) {
-        int fileCount = fileNames.length;
-        Array<TextureRegion> textureArray = new Array<TextureRegion>();
-        for (int n = 0; n < fileCount; n++) {
-            String fileName = fileNames[n];
-            Texture texture = new Texture( Gdx.files.internal(fileName) );
-            texture.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
-            textureArray.add( new TextureRegion( texture ) );
-        }
-        Animation<TextureRegion> anim = new Animation<TextureRegion>(frameDuration, textureArray);
+        Array<TextureRegion> textureArray = new Array<>();
+        Stream.of(fileNames)
+                .forEach(fileName -> {
+                    Texture texture = new Texture( Gdx.files.internal(fileName) );
+                    texture.setFilter( Texture.TextureFilter.Linear, Texture.TextureFilter.Linear );
+                    textureArray.add( new TextureRegion( texture ) );
+                });
+
+        Animation<TextureRegion> anim = new Animation<>(frameDuration, textureArray);
+
         if (loop)
             anim.setPlayMode(Animation.PlayMode.LOOP);
         else
             anim.setPlayMode(Animation.PlayMode.NORMAL);
+
         if (animation == null)
             setAnimation(anim);
         return anim;
@@ -174,19 +176,13 @@ public class BasicActor extends Group {
     }
 
     public void applyPhysics(float dt) {
-        // apply acceleration
         velocityVector.add( accelerationVector.x * dt, accelerationVector.y * dt );
         float speed = getSpeed();
-        // decrease speed (decelerate) when not accelerating
         if ( accelerationVector.len() == 0)
             speed -= deceleration * dt;
-        // keep speed within set bounds
         speed = MathUtils.clamp(speed, 0, maxSpeed);
-        // update velocity
         setSpeed(speed);
-        // apply velocity
         moveBy( velocityVector.x * dt, velocityVector.y * dt );
-        // reset acceleration
         accelerationVector.set(0,0);
     }
 
@@ -201,8 +197,7 @@ public class BasicActor extends Group {
         float w = getWidth();
         float h = getHeight();
         float[] vertices = new float[2*numSides];
-        for (int i = 0; i < numSides; i++)
-        {
+        for (int i = 0; i < numSides; i++) {
             float angle = i * 6.28f / numSides;
             // x-coordinate
             vertices[2*i] = w/2 * MathUtils.cos(angle) + w/2;
@@ -223,7 +218,6 @@ public class BasicActor extends Group {
     public boolean overlaps(BasicActor other) {
         Polygon poly1 = this.getBoundaryPolygon();
         Polygon poly2 = other.getBoundaryPolygon();
-        // initial test to improve performance
         if ( !poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle()) )
             return false;
         return Intersector.overlapConvexPolygons( poly1, poly2 );
@@ -244,7 +238,6 @@ public class BasicActor extends Group {
     public Vector2 preventOverlap(BasicActor other) {
         Polygon poly1 = this.getBoundaryPolygon();
         Polygon poly2 = other.getBoundaryPolygon();
-        // initial test to improve performance
         if ( !poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle()) )
             return null;
         MinimumTranslationVector mtv = new MinimumTranslationVector();
@@ -284,16 +277,12 @@ public class BasicActor extends Group {
     }
 
     public void boundToWorld() {
-        // check left edge
         if (getX() < 0)
             setX(0);
-        // check right edge
         if (getX() + getWidth() > worldBounds.width)
             setX(worldBounds.width - getWidth());
-        // check bottom edge
         if (getY() < 0)
             setY(0);
-        // check top edge
         if (getY() + getHeight() > worldBounds.height)
             setY(worldBounds.height - getHeight());
     }
@@ -301,9 +290,7 @@ public class BasicActor extends Group {
     public void alignCamera() {
         Camera cam = this.getStage().getCamera();
         Viewport v = this.getStage().getViewport();
-        // center camera on actor
         cam.position.set( this.getX() + this.getOriginX(), this.getY() + this.getOriginY(), 0 );
-        // bound camera to layout
         cam.position.x = MathUtils.clamp(cam.position.x,
                 cam.viewportWidth/2, worldBounds.width - cam.viewportWidth/2);
         cam.position.y = MathUtils.clamp(cam.position.y,

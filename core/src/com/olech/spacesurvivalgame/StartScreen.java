@@ -8,11 +8,12 @@ import com.olech.spacesurvivalgame.gameactors.PickFrame;
 
 public class StartScreen extends BaseScreen {
     private int shipIndex = 0;
-    private int noShips = 3;
+    private int noShips = 4;
     private PickFrame pickFrame;
     private BasicActor ship1;
     private BasicActor ship2;
     private BasicActor ship3;
+    private BasicActor ship4;
 
 
     @Override
@@ -21,18 +22,20 @@ public class StartScreen extends BaseScreen {
         space.loadTexture( "background.png" );
         space.setSize(SpaceGame.GAME_WIDTH,SpaceGame.GAME_HEIGHT);
 
-        ship1 = new BasicActor(uiStage.getWidth()/2-100, uiStage.getHeight()/2-100, uiStage);
+        ship1 = new BasicActor(uiStage.getWidth()/2-150, uiStage.getHeight()/2-100, uiStage);
         ship1.loadTexture("ship1.png");
 
         pickFrame = new PickFrame(0,0,uiStage);
         pickFrame.centerAtActor(ship1);
 
-        ship2 = new BasicActor(uiStage.getWidth()/2, uiStage.getHeight()/2-100, uiStage);
+        ship2 = new BasicActor(uiStage.getWidth()/2-50, uiStage.getHeight()/2-100, uiStage);
         ship2.loadTexture("ship2.png");
 
-        ship3 = new BasicActor(uiStage.getWidth()/2+100,uiStage.getHeight()/2-100, uiStage);
+        ship3 = new BasicActor(uiStage.getWidth()/2+50,uiStage.getHeight()/2-100, uiStage);
         ship3.loadTexture("ship3.png");
 
+        ship4 = new BasicActor(uiStage.getWidth()/2+150,uiStage.getHeight()/2-100, uiStage );
+        ship4.loadTexture("ship4.png");
         BasicActor title = new BasicActor(0,0,mainStage);
         title.loadTexture("title.png");
         title.centerAtPosition(mainStage.getWidth()/2 ,mainStage.getHeight()/2+200);
@@ -74,6 +77,8 @@ public class StartScreen extends BaseScreen {
             pickFrame.centerAtActor(ship2);
         else if(shipIndex == 2)
             pickFrame.centerAtActor(ship3);
+        else if(shipIndex == 3)
+            pickFrame.centerAtActor(ship4);
 
     }
 }

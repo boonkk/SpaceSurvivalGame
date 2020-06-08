@@ -9,7 +9,7 @@ public class Spaceship extends BasicActor {
     private Thruster thrusters;
     private Shield shield;
     public int shieldPower;
-    private String[] shipFiles = {"ship1.png", "ship2.png", "ship3.png"};
+    private String[] shipFiles = {"ship1.png", "ship2.png", "ship3.png", "ship4.png"};
 
     public Spaceship(float x, float y, Stage s, int shipNo) {
         super(x, y, s);
