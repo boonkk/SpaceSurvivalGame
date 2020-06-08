@@ -11,6 +11,7 @@ Ship has shield which resists 3 asteroid hits, then get destroyed.
 - [ ENTER ] - new game
 
 # Screens:
-
+**Starting screen:**
 ![Starting screen](https://github.com/boonkk/SpaceSurvivalGame/blob/master/presentationimages/startscreen.PNG)
+**Game screen:**
 ![Game screen](https://github.com/boonkk/SpaceSurvivalGame/blob/master/presentationimages/gamescreen.PNG)
