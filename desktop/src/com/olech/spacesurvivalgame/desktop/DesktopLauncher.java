@@ -7,6 +7,6 @@ import com.olech.spacesurvivalgame.SpaceGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Game myGame = new SpaceGame();
-		LwjglApplication launcher = new LwjglApplication( myGame, "Space Survival Game", 800, 600 );
+		LwjglApplication launcher = new LwjglApplication( myGame, "Space Survival Game", 1024, 768 );
 	}
 }

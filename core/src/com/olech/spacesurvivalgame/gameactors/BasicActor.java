@@ -271,31 +271,10 @@ public class BasicActor extends Group {
         return list;
     }
 
-//    public static ArrayList<Asteroid> getRockList(Stage stage) {
-//        ArrayList<Asteroid> list = new ArrayList<>();
-//        for (Actor a : stage.getActors()) {
-//            if (a instanceof Asteroid)
-//                list.add( (Asteroid)a );
-//        }
-//        return list;
-//    }
-//
-//    public static ArrayList<Vegetable> getVegetablesList(Stage stage) {
-//        ArrayList<Vegetable> list = new ArrayList<>();
-//        for (Actor a : stage.getActors()) {
-//            if (a instanceof Vegetable)
-//                list.add( (Vegetable) a );
-//        }
-//        return list;
-//    }
 
     public static int count(Stage stage, String className) {
         return getList(stage, className).size();
     }
-
-//    public static int getVegeCount(Stage stage) {
-//        return getVegetablesList(stage).size();
-//    }
 
     public static void setWorldBounds(float width, float height) {
         worldBounds = new Rectangle( 0,0, width, height );
@@ -332,8 +311,7 @@ public class BasicActor extends Group {
         cam.update();
     }
 
-    public void wrapAroundWorld()
-    {
+    public void wrapAroundWorld() {
         if (getX() + getWidth() < 0)
             setX( worldBounds.width );
         if (getX() > worldBounds.width)

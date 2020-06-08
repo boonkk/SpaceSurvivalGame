@@ -9,11 +9,12 @@ public class Spaceship extends BasicActor {
     private Thruster thrusters;
     private Shield shield;
     public int shieldPower;
+    private String[] shipFiles = {"ship1.png", "ship2.png", "ship3.png"};
 
-    public Spaceship(float x, float y, Stage s) {
+    public Spaceship(float x, float y, Stage s, int shipNo) {
         super(x, y, s);
 
-        loadTexture( "ship.png" );
+        loadTexture( shipFiles[shipNo]);
         setBoundaryPolygon(8);
         setAcceleration(400);
         setMaxSpeed(250);
@@ -50,6 +51,7 @@ public class Spaceship extends BasicActor {
         if (shieldPower <= 0)
             shield.setVisible(false);
 
+        //alignCamera();
         applyPhysics(dt);
         wrapAroundWorld();
     }

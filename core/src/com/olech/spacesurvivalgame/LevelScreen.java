@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.olech.spacesurvivalgame.gameactors.*;
 
+
 public class LevelScreen extends BaseScreen
 {
     private Spaceship spaceship;
@@ -13,9 +14,8 @@ public class LevelScreen extends BaseScreen
         gameOver = false;
         BasicActor space = new BasicActor(0,0, mainStage);
         space.loadTexture( "background.png" );
-        space.setSize(800,600);
+        space.setSize(SpaceGame.GAME_WIDTH,SpaceGame.GAME_HEIGHT);
         BasicActor.setWorldBounds(space);
-        spaceship = new Spaceship(400,300, mainStage);
 
         new Asteroid(600,500, mainStage);
         new Asteroid(600,300, mainStage);
@@ -25,9 +25,6 @@ public class LevelScreen extends BaseScreen
         new Asteroid(200,300, mainStage);
         new Asteroid(200,500, mainStage);
         new Asteroid(400,500, mainStage);
-
-
-
     }
     public void update(float dt) {
         for ( BasicActor rockActor : BasicActor.getList(mainStage, "com.olech.spacesurvivalgame.gameactors.Asteroid") ) {
@@ -39,7 +36,7 @@ public class LevelScreen extends BaseScreen
                     spaceship.setPosition(-1000,-1000);
                     BasicActor messageLose = new BasicActor(0,0, uiStage);
                     messageLose.loadTexture("losemessage.png");
-                    messageLose.centerAtPosition(400,300);
+                    messageLose.centerAtPosition(uiStage.getWidth()/2,uiStage.getHeight()/2);
                     messageLose.setOpacity(0);
                     messageLose.addAction( Actions.fadeIn(1) );
                     gameOver = true;
@@ -67,7 +64,7 @@ public class LevelScreen extends BaseScreen
         if ( !gameOver && BasicActor.count(mainStage, "com.olech.spacesurvivalgame.gameactors.Asteroid") == 0 ) {
             BasicActor messageWin = new BasicActor(0,0, uiStage);
             messageWin.loadTexture("winmessage.png");
-            messageWin.centerAtPosition(400,300);
+            messageWin.centerAtPosition(uiStage.getWidth()/2,uiStage.getHeight()/2);
             messageWin.setOpacity(0);
             messageWin.addAction( Actions.fadeIn(1) );
             gameOver = true;
@@ -80,23 +77,22 @@ public class LevelScreen extends BaseScreen
 
     }
 
-    public boolean keyDown(int keycode)
-    {
+    @Override
+    public boolean keyDown(int keycode) {
         if ( keycode == Input.Keys.X )
             spaceship.warp();
-
         if ( keycode == Input.Keys.SPACE )
             spaceship.shoot();
-
         if( keycode == Input.Keys.ENTER) {
             //need to remove everything from previous game
-            for ( BasicActor rockActor : BasicActor.getList(mainStage, "com.olech.spacesurvivalgame.gameactors.Asteroid") ) {
-                rockActor.remove();
-            }
-            uiStage.getActors().clear();
-            initialize();
+//            for ( BasicActor rockActor : BasicActor.getList(mainStage, "com.olech.spacesurvivalgame.gameactors.Asteroid") ) {
+////                rockActor.remove();
+////            }
+////            uiStage.getActors().clear();
+////            initialize();
+            StartScreen startScreen = new StartScreen();
+            SpaceGame.setActiveScreen(startScreen);
         }
-
         return false;
     }
 
@@ -106,6 +102,10 @@ public class LevelScreen extends BaseScreen
             new Asteroid(rockActor.getX(), rockActor.getY(),mainStage).setScale(rockActor.getScaleX()/2);
 
         }
+    }
+
+    public void createShip(int shipNo) {
+        spaceship = new Spaceship(400,300, mainStage, shipNo);
     }
 
 
